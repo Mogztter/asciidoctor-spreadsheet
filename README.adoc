@@ -1,0 +1,71 @@
+= :straight_ruler: Asciidoctor Spreadsheet Extension
+:uri-asciidoctorjs: https://github.com/asciidoctor/asciidoctor.js
+
+ifdef::env-github[]
+image:https://img.shields.io/travis/Mogztter/asciidoctor-spreadsheet/master.svg[Travis build status, link=https://travis-ci.org/Mogztter/asciidoctor-spreadsheet]
+endif::[]
+
+An extension for {uri-asciidoctorjs}[Asciidoctor.js] to extract values from Spreadsheet!
+
+== Install
+
+=== Node.js
+
+Install the dependencies:
+
+    $ npm install asciidoctor.js asciidoctor-spreadsheet
+
+Create a file named `spreadsheet.js` with following content and run it:
+
+```javascript
+const asciidoctor = require('asciidoctor.js')()
+const spreadsheet = require('asciidoctor-spreadsheet')
+
+const input = 'spreadsheet:sales.csv[3,2]'
+
+spreadsheet.register(asciidoctor.Extensions)
+console.log(asciidoctor.convert(input)) // <1>
+
+const registry = asciidoctor.Extensions.create()
+spreadsheet.register(registry)
+console.log(asciidoctor.convert(input, {'extension_registry': registry})) // <2>
+```
+<1> Register the extension in the global registry
+<2> Register the extension in a dedicated registry
+
+=== Browser
+
+Install the dependencies:
+
+    $ npm install asciidoctor.js asciidoctor-spreadsheet
+
+Create a file named `spreadsheet.html` with the following content and open it in your browser:
+
+```html
+<html>
+  <head>
+    <script src="node_modules/asciidoctor.js/dist/browser/asciidoctor.js"></script>
+    <script src="node_modules/asciidoctor-spreadsheet/dist/browser/asciidoctor-spreadsheet.js"></script>
+  </head>
+  <body>
+    <div id="content"></div>
+    <script>
+      var input = 'spreadsheet:sales.csv[3,2]'
+
+      var asciidoctor = Asciidoctor()
+      var spreadsheet = AsciidoctorSpreadsheet
+
+      const registry = asciidoctor.Extensions.create()
+      spreadsheet.register(registry)
+      var result = asciidoctor.convert(input, {'extension_registry': registry})
+      document.getElementById('content').innerHTML = result
+    </script>
+  </body>
+</html>
+```
+<1> Register the extension in the global registry
+<2> Register the extension in a dedicated registry
+
+== Usage
+
+Use `spreadsheet:` followed by the name of your CSV file.
